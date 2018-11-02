@@ -56,8 +56,7 @@ module XcodeBuild
           (package_path / 'metadata.xml').open('w') do |f|
             f.write(self.xml_meta_data)
           end
-          transporter = '/Applications/Xcode.app/Contents/Applications/Application Loader.app/Contents/itms/bin/iTMSTransporter'
-          XcodeBuild.run(transporter, '-m', 'upload', '-f', dir, '-u', username, '-p', password, '-v', 'detailed')
+          XcodeBuild.run(XcodeBuild.transporter_path, '-m', 'upload', '-f', dir, '-u', username, '-p', password, '-v', 'detailed')
         end
       ensure
         export_plist.close

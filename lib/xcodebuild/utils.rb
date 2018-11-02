@@ -6,8 +6,24 @@ module XcodeBuild
 
   PID = $$
 
+  # Returns '/Applications/Xcode.app/Contents/Developer', or the value of the environment variable DEVELOPER_DIR if set.
+  def self.xcode_path
+    ENV.fetch('DEVELOPER_DIR', "/Applications/Xcode.app/Contents/Developer")
+  end
+
+  def self.transporter_path
+    search_root = File.expand_path(File.join(self.xcode_path, '..'))
+    path = %x{find #{search_root} -name iTMSTransporter}.chomp
+    return path if File.exist?(path)
+    raise "iTMSTransporter not found."
+  end
+
   def self.is_ci_build
-    ENV['CI'] == 'true' || ENV['TRAVIS'] == 'true' || ENV['TF_BUILD'] == 'True'
+    # CI is set by Circle CI
+    # TRAVIS is set by Travis CI
+    # TF_BUILD is set by Azure Pipelines ("TF" is "Team Foundation")
+    # XCS is set by Xcode Server
+    ENV['CI'] == 'true' || ENV['TRAVIS'] == 'true' || ENV['TF_BUILD'] == 'True' || ENV["XCS"].to_i == 1
   end
 
   def self.is_dev_build
@@ -67,11 +83,9 @@ module XcodeBuild
     ENV.fetch('BUILD_NUMBER', default_build_number)
   end
 
-  # Runs xcodebuild. The Xcode version is based on the DEVELOPER_DIR environment variable, if it exists. Otherwise,
-  # is uses the projects 'xcode_app' setting.
+  # Runs xcodebuild.
   def self.xcodebuild(scheme, configuration, args, action, project, build_settings)
-    developer_dir = ENV.fetch('DEVELOPER_DIR', "/Applications/Xcode.app/Contents/Developer")
-    env = {'DEVELOPER_DIR' => developer_dir}
+    env = {'DEVELOPER_DIR' => self.xcode_path}
 
     xcode_args = Array.new
     xcode_args << 'xcodebuild'
@@ -140,8 +154,7 @@ module XcodeBuild
   end
 
   def self.export_archive(build)
-    developer_dir = ENV.fetch('DEVELOPER_DIR', "/Applications/Xcode.app/Contents/Developer")
-    env = {'DEVELOPER_DIR' => developer_dir}
+    env = {'DEVELOPER_DIR' => self.xcode_path}
 
     xcode_args = Array.new
     xcode_args << 'xcodebuild' << '-exportArchive'
