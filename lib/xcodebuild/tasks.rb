@@ -99,6 +99,7 @@ module XcodeBuild
         Rake::Task[:deploy_only].invoke
       end
 
+      desc 'Deploys a previously built package.'
       task :deploy_only do
         @project.builds.each do |build|
           platform = case build.sdk
