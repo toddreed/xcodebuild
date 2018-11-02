@@ -3,6 +3,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/.idea/rake-apple.iml" filepath="$PROJECT_DIR$/.idea/rake-apple.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/xcodebuild.iml" filepath="$PROJECT_DIR$/.idea/xcodebuild.iml" />
     </modules>
   </component>
 </project>
