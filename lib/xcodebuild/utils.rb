@@ -121,7 +121,7 @@ module XcodeBuild
   # Runs xcodebuild archive with a Build object.
   def self.archive(build)
     args = Array.new
-    args << '-archivePath' << "#{build.project.build_dir}/#{build.name}.xcarchive"
+    args << '-archivePath' << build.archive_path.to_s
     args << '-sdk' << build.sdk
 
     build_settings = Array.new
@@ -159,8 +159,8 @@ module XcodeBuild
     xcode_args = Array.new
     xcode_args << 'xcodebuild' << '-exportArchive'
     xcode_args << '-exportOptionsPlist' << build.export_options_plist
-    xcode_args << '-archivePath' << "#{build.project.build_dir}/#{build.name}.xcarchive"
-    xcode_args << '-exportPath' << "#{build.project.build_dir}/#{build.name}"
+    xcode_args << '-archivePath' << build.archive_path.to_s
+    xcode_args << '-exportPath' << build.export_path.to_s
 
     run(env, *xcode_args)
   end

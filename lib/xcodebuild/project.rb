@@ -141,8 +141,16 @@ module XcodeBuild
       name.gsub(/\s/, '_')
     end
 
+    def archive_path
+      self.export_path.sub_ext('.xcarchive')
+    end
+
     def ipa_path
-      Pathname.new("#{@project.build_dir}/#{self.name}/#{@scheme}.ipa")
+      self.export_path / "#{@scheme}.ipa"
+    end
+
+    def export_path
+      Pathname.new("#{@project.build_dir}/Artifacts/#{self.name}")
     end
 
   end
