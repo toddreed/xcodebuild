@@ -2,7 +2,7 @@
 
 Xcodebuild is a Ruby gem that implements a [rake](https://github.com/ruby/rake) task library for building Xcode projects.
 
-**Warning**: this project is unsupported, not under active development, and not intended for a general audience. I’m not a Ruby developer, so this project contains bad Ruby code, and there are probably better projects out there that accomplish similar things (for example, [fastlane](https://fastlane.tools) and [xcbuild](https://github.com/facebook/xcbuild)).
+**Warning**: this project is unsupported, not under active development, and not intended for a general audience. I’m not a Ruby developer, so this project contains bad Ruby code, and there are probably better projects out there that accomplish similar things (for example, [fastlane](https://fastlane.tools) and [xcbuild](https://github.com/facebook/xcbuild)).
 
 ## Usage
 
@@ -66,7 +66,7 @@ To use Xcodebuild in a project:
 
 | Variable                     | Description                                                  | Default    |
 | ---------------------------- | ------------------------------------------------------------ | ---------- |
-| `BUILD_NUMBER`               | The build number pass to `xcodebuild` and assigned to the build number (i.e. `CFBundleVersion`) for each target. | yyyy.ddd.0 |
+| `BUILD_NUMBER`               | The build number passed to `xcodebuild` (the Xcode command line tool, not this library) and assigned to the `BUILD_NUMBER` build setting of your Xcode project. This assumes that you have a user-defined build setting named `BUILD_NUMBER` in your Xcode project, and that in your `Info.plist` file you assign the Bundle version property (`CFBundleVersion`) to `${BUILD_NUMBER}`. | yyyy.ddd.0 |
 | `DEVELOPER_DIR`              | Controls the version of Xcode tools used.                    |            |
 | `APP_STORE_CONNECT_USER`     | The Apple ID for an App Store Connect account with the Developer role used to upload builds. This is only used for the `deploy` task that uploads the `.ipa` file to TestFlight. |            |
 | `APP_STORE_CONNECT_PASSWORD` | The password for the above Apple ID account.                 |            |
@@ -88,9 +88,9 @@ The tasks and their dependencies:
 
 
 
-The `package` tasks creates an `.xcarchive`, and the `deploy` tasks uploads to App Store Connect (TestFlight).
+The `package` tasks creates an `.xcarchive`, and the `deploy` tasks uploads to App Store Connect (TestFlight).
 
-The `install_certificates` and `install_provisioning_profiles` tasks are no-ops when performed on a developer’s machine. This is determined by the existence of any environment variables that indicate that rake is running in a CI environment (e.g. `CI`, `TRAVIS`, or `TF_BUILD`). On a developer’s machine, it is assumed that the necessary certificates are in the login keychain and the requisite provisioning profiles are present in `~/Library/MobileDevice/Provisioning Profiles`.
+The `install_certificates` and `install_provisioning_profiles` tasks are no-ops when performed on a developer’s machine. This is determined by the existence of any environment variables that indicate that rake is running in a CI environment (e.g. `CI`, `TRAVIS`, or `TF_BUILD`). On a developer’s machine, it is assumed that the necessary certificates are in the login keychain and the requisite provisioning profiles are present in `~/Library/MobileDevice/Provisioning Profiles`.
 
 ## License
 
