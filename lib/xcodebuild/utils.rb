@@ -1,6 +1,8 @@
 require 'shellwords'
+require 'fileutils'
 require 'date'
 require 'xcodebuild/run'
+require 'xcodebuild/package'
 
 module XcodeBuild
 
@@ -163,6 +165,30 @@ module XcodeBuild
     xcode_args << '-exportPath' << build.export_path.to_s
 
     run(env, *xcode_args)
+  end
+
+  def self.make_deploy_script(project)
+    deploy_ruby_file = File.join(File.dirname(__FILE__), '_deploy.rb')
+    FileUtils.copy(deploy_ruby_file, project.packages_path / 'deploy.rb')
+  end
+
+  def self.export_packages(project)
+    project.builds.each do |build|
+      platform = case build.sdk
+                 when 'iphoneos'
+                   'ios'
+                 when 'appletvos'
+                   'appletvos'
+                 when 'macosx'
+                   'osx'
+                 end
+      package = XcodeBuild::Package.new(build.ipa_path, build.app_id, platform)
+      package.make_itmsp(build.package_path)
+    end
+  end
+
+  def self.upload_build_to_test_flight(build, username, password)
+    XcodeBuild.run(XcodeBuild.transporter_path, '-m', 'upload', '-f', build.package_path.to_s, '-u', username, '-p', password, '-v', 'detailed')
   end
 
   def self.fix_test_output(test_log)

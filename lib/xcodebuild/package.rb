@@ -46,21 +46,16 @@ module XcodeBuild
 </package>)
     end
 
-    def upload(username, password)
-      export_plist = Tempfile.new(['export', '.plist'])
-      begin
-        Dir.mktmpdir do |dir|
-          package_path = Pathname.new(dir) / 'Package.itmsp'
-          package_path.mkpath
-          FileUtils.cp @path, package_path
-          (package_path / 'metadata.xml').open('w') do |f|
-            f.write(self.xml_meta_data)
-          end
-          XcodeBuild.run(XcodeBuild.transporter_path, '-m', 'upload', '-f', dir, '-u', username, '-p', password, '-v', 'detailed')
-        end
-      ensure
-        export_plist.close
-        export_plist.unlink
+    # Creates the directory that can be passed to iTMSTransporter via the `-f` command line option. This directory
+    # contains a copy of the .ipa file and `metadata.xml` file providing metadata about the .ipa file.
+    #
+    # @param package_path [Pathname] The path location where the package is created. This directory typically has a `
+    # .itmsp` extension.
+    def make_itmsp(package_path)
+      package_path.mkpath
+      FileUtils.cp @ipa_path, package_path
+      (package_path / 'metadata.xml').open('w') do |f|
+        f.write(self.xml_meta_data)
       end
     end
 

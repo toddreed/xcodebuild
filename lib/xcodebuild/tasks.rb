@@ -82,6 +82,8 @@ module XcodeBuild
         @project.builds.each do |build|
           XcodeBuild.export_archive(build)
         end
+        XcodeBuild.export_packages(@project)
+        XcodeBuild.make_deploy_script(@project)
       end
 
       desc 'Prepares release notes from Git commit messages.'
@@ -102,16 +104,7 @@ module XcodeBuild
       desc 'Deploys a previously built package.'
       task :deploy_only do
         @project.builds.each do |build|
-          platform = case build.sdk
-                     when 'iphoneos'
-                       'ios'
-                     when 'appletvos'
-                       'appletvos'
-                     when 'macosx'
-                       'osx'
-                     end
-          package = XcodeBuild::Package.new(build.ipa_path, build.app_id, platform)
-          package.upload('@env:APP_STORE_CONNECT_USER', '@env:APP_STORE_CONNECT_PASSWORD')
+          XcodeBuild.upload_build_to_test_flight(build, '@env:APP_STORE_CONNECT_USER', '@env:APP_STORE_CONNECT_PASSWORD')
         end
       end
 
