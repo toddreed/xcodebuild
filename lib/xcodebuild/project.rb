@@ -49,6 +49,8 @@ module XcodeBuild
 
   class BuildProject < BuildSettings
     attr_reader :workspace, :project, :builds, :tests, :build_dir, :certificates_dir, :provisioning_profiles_dir
+    attr_reader :artifacts_path, :archives_path, :exports_path, :packages_path
+
 
     def initialize(sdk: 'iphoneos',
                    code_signing_identity: 'iPhone Distribution',
@@ -65,6 +67,10 @@ module XcodeBuild
       @builds = []
       @tests = []
       @build_dir = File.absolute_path(build_dir)
+      @artifacts_path = Pathname.new(build_dir) / 'Artifacts'
+      @archives_path = @artifacts_path / 'Archives'
+      @exports_path = @artifacts_path / 'Exports'
+      @packages_path = @artifacts_path / 'Packages'
       @certificates_dir = File.absolute_path(certificates_dir)
       @provisioning_profiles_dir = File.absolute_path(provisioning_profiles_dir)
     end
@@ -104,6 +110,7 @@ module XcodeBuild
       build.parent = self
       @builds << build
     end
+
   end
 
   class Build < BuildSettings
@@ -141,16 +148,24 @@ module XcodeBuild
       name.gsub(/\s/, '_')
     end
 
+    # @return [Pathname] The location of the archive (`.xcarchive`).
     def archive_path
-      self.export_path.sub_ext('.xcarchive')
+      @project.archives_path / "#{self.name}.xcarchive"
     end
 
+    # @return [Pathname] The location of the package (`.itmsp`) used by iTMSTransporter.
+    def package_path
+      @project.packages_path / "#{self.name}.itmsp"
+    end
+
+    # @return [Pathname] The location of the exported `.ipa` file.
     def ipa_path
       self.export_path / "#{@scheme}.ipa"
     end
 
+    # @return [Pathname] The location of the directory containing the output of xcodebuild -exportArchive.
     def export_path
-      Pathname.new("#{@project.build_dir}/Artifacts/#{self.name}")
+      @project.exports_path / self.name
     end
 
   end
