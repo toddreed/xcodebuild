@@ -8,9 +8,10 @@ module XcodeBuild
 
   PID = $$
 
-  # Returns '/Applications/Xcode.app/Contents/Developer', or the value of the environment variable DEVELOPER_DIR if set.
+  # @return [String] the value of the environment variable DEVELOPER_DIR if set, otherwise the path returned by
+  # xcode-select -p.
   def self.xcode_path
-    ENV.fetch('DEVELOPER_DIR', "/Applications/Xcode.app/Contents/Developer")
+    ENV.fetch('DEVELOPER_DIR', `xcode-select -p`.chomp)
   end
 
   def self.transporter_path
