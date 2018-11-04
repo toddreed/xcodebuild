@@ -13,22 +13,22 @@ module XcodeBuild
 
   class Package
 
-    def initialize(path, app_id, platform)
-      @path = path # a Pathname
+    def initialize(ipa_path, app_id, platform)
+      @ipa_path = ipa_path # a Pathname
       @app_id = app_id
       @platform = platform
     end
 
     def md5
       md5 = Digest::MD5.new
-      @path.open('rb') do |f|
+      @ipa_path.open('rb') do |f|
         f.each_chunk(1024) {|chunk| md5.update(chunk)}
       end
       md5.hexdigest
     end
 
     def bytes
-      @path.size
+      @ipa_path.size
     end
 
     def xml_meta_data
@@ -37,7 +37,7 @@ module XcodeBuild
     <software_assets apple_id="#{@app_id}" app_platform="#{@platform}">
         <asset type="bundle">
             <data_file>
-                <file_name>#{@path.basename.to_s}</file_name>
+                <file_name>#{@ipa_path.basename.to_s}</file_name>
                 <checksum type="md5">#{self.md5}</checksum>
                 <size>#{self.bytes}</size>
             </data_file>
