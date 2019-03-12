@@ -78,19 +78,38 @@ A *build project* is a description of what you want to build. It specifies the X
 
 A build project is has the following model:
 
-![build-project-model](docs/build-project-model.svg)
+![build-project-model](README.assets/build-project-model.svg)
 
 ## Tasks
 
 The tasks and their dependencies:
 
-![tasks](docs/tasks.svg)
+![tasks](README.assets/tasks.svg)
 
 
 
 The `package` tasks creates an `.xcarchive`, and the `deploy` tasks uploads to App Store Connect (TestFlight).
 
 The `install_certificates` and `install_provisioning_profiles` tasks are no-ops when performed on a developer’s machine. This is determined by the existence of any environment variables that indicate that rake is running in a CI environment (e.g. `CI`, `TRAVIS`, or `TF_BUILD`). On a developer’s machine, it is assumed that the necessary certificates are in the login keychain and the requisite provisioning profiles are present in `~/Library/MobileDevice/Provisioning Profiles`.
+
+## Debugging with RubyMine
+
+To debug the Rake library a suitable test project is needed to run the Rake tasks on. The `Gemfile` for the test project needs to reference the source path of this project; for example:
+
+```ruby
+# Normally this would be used…
+# gem 'xcodebuild', :git => 'https://github.com/toddreed/xcodebuild.git'
+# To debug we need this…
+gem 'xcodebuild', :path => '/Users/todd/Organization/Reaction/Source/xcodebuild'
+```
+
+Don’t forget to run `bundle install` after editing the `Gemfile`.
+
+In RubyMine, your Run Configuration should look something like this:
+
+![RubyMine-Run-Configuration-Configuration](README.assets/RubyMine-Run-Configuration-Configuration.png)
+
+![RubyMine-Run-Configuration-Bundler](README.assets/RubyMine-Run-Configuration-Bundler.png)
 
 ## License
 
