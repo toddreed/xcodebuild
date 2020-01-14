@@ -61,9 +61,6 @@ module XcodeBuild
       run(*%w(security default-keychain -s login.keychain))
     end
 
-    #run('security', 'import', certificate, '-k', build_keychain, '-t', 'cert', '-f', 'pkcs12',
-    #    '-P', certificate_password, '-A')
-
     run('security', 'import', certificate, '-k', build_keychain, '-t', 'cert', '-f', 'pkcs12',
         '-T', '/usr/bin/codesign', '-T', '/usr/bin/xcodebuild', '-P', certificate_password)
     run('security', 'set-key-partition-list', '-S', 'apple-tool:,apple:', '-s', '-k', '', build_keychain)
