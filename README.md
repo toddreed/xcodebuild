@@ -96,7 +96,7 @@ bundle exec rake deploy_only
 
 A *build project* is a description of what you want to build. It specifies the Xcode project or workspace, the scheme and configuration to use, and other build settings and metadata needed to create an `.xcarchive` or `.ipa` file. There are two ways to specifying your build project: with a YAML file, or with Ruby code in your Rakefile.
 
-A build project is has the following model:
+A build project has the following model:
 
 ![build-project-model](README.assets/build-project-model.svg)
 
