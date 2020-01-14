@@ -15,6 +15,8 @@ module XcodeBuild
 
     def initialize(ipa_path, app_id, platform)
       @ipa_path = ipa_path # a Pathname
+      # iTMSTransporter does not allow spaces in the IPA filename
+      @ipa_safe_filename = ipa_path.basename.to_s.sub(/ /, '-')
       @app_id = app_id
       @platform = platform
     end
@@ -37,7 +39,7 @@ module XcodeBuild
     <software_assets apple_id="#{@app_id}" app_platform="#{@platform}">
         <asset type="bundle">
             <data_file>
-                <file_name>#{@ipa_path.basename.to_s}</file_name>
+                <file_name>#{@ipa_safe_filename}</file_name>
                 <checksum type="md5">#{self.md5}</checksum>
                 <size>#{self.bytes}</size>
             </data_file>
@@ -53,10 +55,9 @@ module XcodeBuild
     # .itmsp` extension.
     def make_itmsp(package_path)
       package_path.mkpath
-      FileUtils.cp @ipa_path, package_path
-      (package_path / 'metadata.xml').open('w') do |f|
-        f.write(self.xml_meta_data)
-      end
+      FileUtils.cp(@ipa_path, package_path/@ipa_safe_filename)
+      metadata_xml_path = package_path / 'metadata.xml'
+      metadata_xml_path.write(self.xml_meta_data)
     end
 
   end
