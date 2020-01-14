@@ -64,13 +64,13 @@ To use Xcodebuild in a project:
 
 ### Environment Variables
 
-| Variable                     | Description                                                  | Default    |
-| ---------------------------- | ------------------------------------------------------------ | ---------- |
-| `BUILD_NUMBER`               | The build number passed to `xcodebuild` (the Xcode command line tool, not this library) and assigned to the `BUILD_NUMBER` build setting of your Xcode project. This assumes that you have a user-defined build setting named `BUILD_NUMBER` in your Xcode project, and that in your `Info.plist` file you assign the Bundle version property (`CFBundleVersion`) to `${BUILD_NUMBER}`. | yyyy.ddd.0 |
-| `DEVELOPER_DIR`              | Controls the version of Xcode tools used.                    |            |
-| `APP_STORE_CONNECT_USER`     | The Apple ID for an App Store Connect account with the Developer role used to upload builds. This is only used for the `deploy` task that uploads the `.ipa` file to TestFlight. |            |
-| `APP_STORE_CONNECT_PASSWORD` | The password for the above Apple ID account.                 |            |
-| `CERTIFICATE_PASSWORD`       | The password use for `.p12` certificates. Currently it is assumed that all certificates have the same password. This is only used when running in a CI environment; otherwise, it is assumed that the necessary certificates (and provisioning profiles) are on the developer’s machine. |            |
+| Variable                     | Description                                                  | Default                                                      |
+| ---------------------------- | ------------------------------------------------------------ | ------------------------------------------------------------ |
+| `BUILD_NUMBER`               | The build number passed to `xcodebuild` (the Xcode command line tool, not this library) and assigned to the `CURRENT_PROJECT_VERSION` build setting of your Xcode project. This assumes that in your `Info.plist` file you assign the Bundle version property (`CFBundleVersion`) to `$(CURRENT_PROJECT_VERSION)`. | If `BUILD_NUMBER` is not set then the default build number is inferred from the most recent build tag in the Git repository. A build tag is assumed to have the form `build/N` where `N` is the build number. For example, the most recent build tag is `build/42`, then the implied build number is 43 (`N`+1). The `tag` Rake task can be used to generate a new build tag. |
+| `DEVELOPER_DIR`              | Controls the version of Xcode tools used.                    | The output from running `xcode-select -p`.                   |
+| `APP_STORE_CONNECT_USER`     | The Apple ID for an App Store Connect account with the Developer role used to upload builds. This is only used for the `deploy` task that uploads the `.ipa` file to TestFlight. |                                                              |
+| `APP_STORE_CONNECT_PASSWORD` | The password for the above Apple ID account.                 |                                                              |
+| `CERTIFICATE_PASSWORD`       | The password used for `.p12` certificates. Currently it is assumed that all certificates have the same password. This is only used when running in a CI environment; otherwise, it is assumed that the necessary certificates (and provisioning profiles) are on the developer’s machine. |                                                              |
 
 ## Build Projects
 

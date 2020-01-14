@@ -7,6 +7,7 @@ require 'xcodebuild/package'
 module XcodeBuild
 
   PID = $$
+  @cached_build_number = nil
 
   # @return [String] the value of the environment variable DEVELOPER_DIR if set, otherwise the path returned by
   # xcode-select -p.
@@ -85,12 +86,20 @@ module XcodeBuild
   end
 
   def self.default_build_number
-    date = Date.today
-    "#{date.year}.#{date.yday}.0"
+    last_build_tag = `git for-each-ref "refs/tags/build/*" --sort=-taggerdate --format='%(refname:short)' --count=1`.chomp
+    match = /build\/(\d+)/.match(last_build_tag)
+    if match
+      (match[1].to_i + 1).to_s
+    else
+      '1'
+    end
   end
 
   def self.build_number
-    ENV.fetch('BUILD_NUMBER', default_build_number)
+    if @cached_build_number == nil
+      @cached_build_number = ENV.fetch('BUILD_NUMBER', default_build_number)
+    end
+    @cached_build_number
   end
 
   # Runs xcodebuild.
