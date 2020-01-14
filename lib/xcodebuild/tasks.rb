@@ -108,6 +108,11 @@ module XcodeBuild
         end
       end
 
+      desc 'Tag the Git repository with the build number'
+      task :tag do
+        XcodeBuild.tag_build
+      end
+
       task :default => [:compile]
     end
   end

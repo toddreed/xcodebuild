@@ -62,6 +62,26 @@ To use Xcodebuild in a project:
 
 7. Run, for example, `bundle exec rake package`. To see a list of tasks, run `bundle exec rake -T`.
 
+### Usage
+
+The typical usage would be:
+
+```sh
+bundle exec rake deploy tag
+```
+
+If the building and deployment steps are separated, you could:
+
+```sh
+bundle exec rake package tag
+```
+
+and then later:
+
+```
+bundle exec rake deploy_only
+```
+
 ### Environment Variables
 
 | Variable                     | Description                                                  | Default                                                      |
