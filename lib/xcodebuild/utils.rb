@@ -35,7 +35,8 @@ module XcodeBuild
     # TRAVIS is set by Travis CI
     # TF_BUILD is set by Azure Pipelines ("TF" is "Team Foundation")
     # XCS is set by Xcode Server
-    ENV['CI'] == 'true' || ENV['TRAVIS'] == 'true' || ENV['TF_BUILD'] == 'True' || ENV["XCS"].to_i == 1
+    # GITHUB_ACTIONS is set by GitHub Actions
+    ENV['CI'] == 'true' || ENV['TRAVIS'] == 'true' || ENV['TF_BUILD'] == 'True' || ENV['XCS'].to_i == 1 || ENV['GITHUB_ACTIONS'] == 'true'
   end
 
   def self.is_dev_build
