@@ -109,7 +109,7 @@ module XcodeBuild
 
     xcode_args << "OBJROOT=#{project.build_dir}/Intermediates"
     xcode_args << "SHARED_PRECOMPS_DIR=#{project.build_dir}/PrecompiledHeaders"
-    xcode_args << "BUILD_NUMBER=#{build_number}"
+    xcode_args << "CURRENT_PROJECT_VERSION=#{build_number}"
     xcode_args.concat(build_settings)
 
     if action == 'test'
