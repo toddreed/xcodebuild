@@ -223,8 +223,8 @@ module XcodeBuild
 
   def self.tag_build
     build_number = self.build_number
-    run(%w(git tag --annotate --message "Build #{build_number}"))
-    run(%w(git push origin "refs/tags/build/#{build_number}"))
+    run('git', 'tag', '--annotate', '--message', "Build #{build_number}", "build/#{build_number}")
+    run('git', 'push', 'origin', "refs/tags/build/#{build_number}")
   end
 
 end
