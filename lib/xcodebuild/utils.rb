@@ -15,10 +15,19 @@ module XcodeBuild
   end
 
   def self.transporter_path
-    search_root = File.expand_path(File.join(self.xcode_path, '..'))
-    path = %x{find #{search_root} -name iTMSTransporter}.chomp
-    return path if File.exist?(path)
-    raise "iTMSTransporter not found."
+    search_root = self.xcode_path
+    # This is where iTMSTransporter is located in Xcode 11, so we'll try this first; otherwise, we'll search for it
+    path = File.join(search_root, 'usr/bin/iTMSTransporter')
+    if File.exist?(path)
+      return path
+    else
+      matches = Dir.glob("#{search_root}/**/bin/iTMSTransporter")
+      if matches.length == 0
+        raise "iTMSTransporter not found."
+      else
+        return matches[0]
+      end
+    end
   end
 
   def self.is_ci_build
