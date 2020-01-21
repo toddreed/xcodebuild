@@ -3,6 +3,7 @@ require 'fileutils'
 require 'date'
 require 'xcodebuild/run'
 require 'xcodebuild/package'
+require 'octokit'
 
 module XcodeBuild
 
@@ -38,6 +39,10 @@ module XcodeBuild
     # XCS is set by Xcode Server
     # GITHUB_ACTIONS is set by GitHub Actions
     ENV['CI'] == 'true' || ENV['TRAVIS'] == 'true' || ENV['TF_BUILD'] == 'True' || ENV['XCS'].to_i == 1 || ENV['GITHUB_ACTIONS'] == 'true'
+  end
+
+  def self.is_github_workflow
+    ENV['GITHUB_ACTIONS'] == 'true'
   end
 
   def self.is_dev_build
@@ -86,12 +91,23 @@ module XcodeBuild
   end
 
   def self.default_build_number
-    last_build_tag = `git for-each-ref "refs/tags/build/*" --sort=-taggerdate --format='%(refname:short)' --count=1`.chomp
-    match = /build\/(\d+)/.match(last_build_tag)
-    if match
-      (match[1].to_i + 1).to_s
+    if is_github_workflow
+      client = Octokit::Client.new(:access_token => ENV['GITHUB_TOKEN'])
+      refs = client.refs(ENV['GITHUB_REPOSITORY'], 'tags/build')
+      last_build_number = refs.map { |it| it[:ref].match(/refs\/tags\/build\/(\d+)/)[1].to_i }.sort.last
+      if last_build_number
+        (last_build_number + 1).to_s
+      else
+        '1'
+      end
     else
-      '1'
+      last_build_tag = `git for-each-ref "refs/tags/build/*" --sort=-taggerdate --format='%(refname:short)' --count=1`.chomp
+      match = /build\/(\d+)/.match(last_build_tag)
+      if match
+        (match[1].to_i + 1).to_s
+      else
+        '1'
+      end
     end
   end
 
@@ -223,8 +239,14 @@ module XcodeBuild
 
   def self.tag_build
     build_number = self.build_number
-    run('git', 'tag', '--annotate', '--message', "Build #{build_number}", "build/#{build_number}")
-    run('git', 'push', 'origin', "refs/tags/build/#{build_number}")
+
+    if is_github_workflow
+      client = Octokit::Client.new(:access_token => ENV['GITHUB_TOKEN'])
+      client.create_ref(ENV['GITHUB_REPOSITORY'], "tags/build/#{build_number}", ENV['GITHUB_SHA'])
+    else
+      run('git', 'tag', '--annotate', '--message', "Build #{build_number}", "build/#{build_number}")
+      run('git', 'push', 'origin', "refs/tags/build/#{build_number}")
+    end
   end
 
 end
