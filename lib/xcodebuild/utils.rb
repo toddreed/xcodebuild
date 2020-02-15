@@ -120,7 +120,7 @@ module XcodeBuild
 
   # Runs xcodebuild.
   def self.xcodebuild(scheme, configuration, args, action, project, build_settings)
-    env = {'DEVELOPER_DIR' => self.xcode_path}
+    env = {'DEVELOPER_DIR' => self.xcode_path, 'NSUnbufferedIO' => 'YES'}
 
     xcode_args = Array.new
     xcode_args << 'xcodebuild'
@@ -229,14 +229,7 @@ module XcodeBuild
     XcodeBuild.run(XcodeBuild.transporter_path, '-m', 'upload', '-f', build.package_path.to_s, '-u', username, '-p', password, '-v', 'detailed')
   end
 
-  def self.fix_test_output(test_log)
-    content = File.read(test_log)
-    content.sub!("** TEST SUCCEEDED **\n\n", '')
-    File.open(test_log, 'w') {|file| file.puts content}
-  end
-
   def self.process_test_log(test_log, scheme, build_dir)
-    fix_test_output(test_log)
     args = %w(xcpretty --report junit --output)
     args << "#{build_dir}/#{scheme}-junit.xml"
     run(*args, :in => test_log)
