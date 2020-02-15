@@ -182,10 +182,15 @@ module XcodeBuild
   def self.test(test)
     args = Array.new
     args << '-sdk' << test.sdk
-    args << '-destination' << test.destinations.join(',')
-    args << '-sdk' << test.sdk
+    test.destinations.each do |destination|
+      args << '-destination' << destination
+    end
 
-    xcodebuild(test.scheme, test.configuration, args, 'test', test.project, [])
+    if test.test_plan
+      args << '-testPlan' << test.test_plan
+    end
+
+    xcodebuild(test.scheme, nil, args, 'test', test.project, [])
   end
 
   def self.export_archive(build)

@@ -171,19 +171,21 @@ module XcodeBuild
   end
 
   class Test < BuildSettings
-    attr_reader :scheme, :destinations
+    attr_reader :scheme, :destinations, :test_plan
     attr_accessor :project
 
-    def initialize(sdk: SDK::IPHONESIMULATOR,
+    def initialize(sdk: 'iphoneos',
                    code_signing_identity: nil,
                    certificate: nil,
                    code_sign_style: nil,
                    scheme:,
-                   destinations: [])
+                   destinations: [],
+                   test_plan: nil)
       super(sdk: sdk, code_signing_identity: code_signing_identity, certificate: certificate, code_sign_style: code_sign_style)
       @scheme = scheme
       @destinations = destinations
       @project = nil
+      @test_plan = test_plan
     end
   end
 

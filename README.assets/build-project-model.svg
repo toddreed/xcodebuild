@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
-<svg xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:xl="http://www.w3.org/1999/xlink" viewBox="490.15 555.25 534.3 256" width="534.3" height="256">
+<svg xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xl="http://www.w3.org/1999/xlink" xmlns:dc="http://purl.org/dc/elements/1.1/" viewBox="490.15 555.25 534.3 256" width="534.3" height="256">
   <defs>
     <font-face font-family="Helvetica Neue" font-size="8" panose-1="2 0 5 3 0 0 0 2 0 4" units-per-em="1000" underline-position="-100" underline-thickness="50" slope="0" x-height="517" cap-height="714" ascent="951.9958" descent="-212.99744" font-weight="400">
       <font-face-src>
@@ -28,10 +28,10 @@
       </g>
     </marker>
   </defs>
-  <metadata> Produced by OmniGraffle 7.9.2 
-    <dc:date>2018-10-27 22:23:29 +0000</dc:date>
+  <metadata> Produced by OmniGraffle 7.13 
+    <dc:date>2020-02-15 21:07:28 +0000</dc:date>
   </metadata>
-  <g id="Canvas_1" stroke-dasharray="none" fill="none" stroke="none" fill-opacity="1" stroke-opacity="1">
+  <g id="Canvas_1" fill-opacity="1" stroke-dasharray="none" stroke-opacity="1" fill="none" stroke="none">
     <title>Canvas 1</title>
     <rect fill="white" x="490.15" y="555.25" width="534.3" height="256"/>
     <g id="Canvas_1: Layer 1">
@@ -40,7 +40,7 @@
         <g id="Graphic_48">
           <rect x="690.4" y="576.5" width="151.09999" height="62" fill="white"/>
           <rect x="690.4" y="576.5" width="151.09999" height="62" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width=".5"/>
-          <text transform="translate(695.4 581.94)" fill="black">
+          <text transform="translate(695.4 581.5)" fill="black">
             <tspan font-family="Helvetica Neue" font-size="8" font-weight="400" fill="black" x="0" y="8">sdk: SDK</tspan>
             <tspan font-family="Helvetica Neue" font-size="8" font-weight="400" fill="black" x="0" y="18.224">code_signing_identity: string</tspan>
             <tspan font-family="Helvetica Neue" font-size="8" font-weight="400" fill="black" x="0" y="28.447998">code_sign_style: CodeSignStyle</tspan>
@@ -51,7 +51,7 @@
         <g id="Graphic_47">
           <rect x="690.4" y="555.5" width="151.09999" height="21" fill="white"/>
           <rect x="690.4" y="555.5" width="151.09999" height="21" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width=".5"/>
-          <text transform="translate(695.4 560.884)" fill="black">
+          <text transform="translate(695.4 560.5)" fill="black">
             <tspan font-family="Helvetica Neue" font-size="8" font-weight="700" fill="black" x="45.149995" y="8">BuildSettings</tspan>
           </text>
         </g>
@@ -60,18 +60,18 @@
         <g id="Graphic_55">
           <rect x="695.4" y="733.5" width="141.09999" height="62" fill="white"/>
           <rect x="695.4" y="733.5" width="141.09999" height="62" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width=".5"/>
-          <text transform="translate(700.4 738.94)" fill="black">
+          <text transform="translate(700.4 738.5)" fill="black">
             <tspan font-family="Helvetica Neue" font-size="8" font-weight="400" fill="black" x="0" y="8">workspace: string?</tspan>
             <tspan font-family="Helvetica Neue" font-size="8" font-weight="400" fill="black" x="0" y="18.224">project: string?</tspan>
             <tspan font-family="Helvetica Neue" font-size="8" font-weight="400" fill="black" x="0" y="28.447998">build_dir: string</tspan>
-            <tspan font-family="Helvetica Neue" font-size="8" font-weight="400" fill="black" x="0" y="38.671997">certificate_dir: string</tspan>
+            <tspan font-family="Helvetica Neue" font-size="8" font-weight="400" fill="black" x="0" y="38.671997">certificates_dir: string</tspan>
             <tspan font-family="Helvetica Neue" font-size="8" font-weight="400" fill="black" x="0" y="48.895996">provisioning_profiles_dir: string</tspan>
           </text>
         </g>
         <g id="Graphic_54">
           <rect x="695.4" y="712.5" width="141.09999" height="21" fill="white"/>
           <rect x="695.4" y="712.5" width="141.09999" height="21" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width=".5"/>
-          <text transform="translate(700.4 717.884)" fill="black">
+          <text transform="translate(700.4 717.5)" fill="black">
             <tspan font-family="Helvetica Neue" font-size="8" font-weight="700" fill="black" x="42.145995" y="8">BuildProject</tspan>
           </text>
         </g>
@@ -83,7 +83,7 @@
         <g id="Graphic_59">
           <rect x="490.4" y="739" width="124.5" height="72" fill="white"/>
           <rect x="490.4" y="739" width="124.5" height="72" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width=".5"/>
-          <text transform="translate(495.4 744.328)" fill="black">
+          <text transform="translate(495.4 744)" fill="black">
             <tspan font-family="Helvetica Neue" font-size="8" font-weight="400" fill="black" x="0" y="8">project: Project</tspan>
             <tspan font-family="Helvetica Neue" font-size="8" font-weight="400" fill="black" x="0" y="18.224">scheme: string</tspan>
             <tspan font-family="Helvetica Neue" font-size="8" font-weight="400" fill="black" x="0" y="28.447998">provisioning_profile: string</tspan>
@@ -95,8 +95,8 @@
         <g id="Graphic_58">
           <rect x="490.4" y="718" width="124.5" height="21" fill="white"/>
           <rect x="490.4" y="718" width="124.5" height="21" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width=".5"/>
-          <text transform="translate(495.4 723.384)" fill="black">
-            <tspan font-family="Helvetica Neue" font-size="8" font-weight="700" fill="black" x="47.553997" y="8">Build</tspan>
+          <text transform="translate(495.4 723)" fill="black">
+            <tspan font-family="Helvetica Neue" font-size="8" font-weight="700" fill="black" x="47.553996" y="8">Build</tspan>
           </text>
         </g>
       </g>
@@ -105,42 +105,43 @@
       </g>
       <g id="Graphic_61">
         <rect x="641.1562" y="748.1622" width="37" height="21" fill="white"/>
-        <text transform="translate(646.1562 753.5502)" fill="black">
-          <tspan font-family="Helvetica Neue" font-size="8" font-weight="400" fill="black" x=".356" y="8">+builds</tspan>
+        <text transform="translate(646.5122 753.1622)" fill="black">
+          <tspan font-family="Helvetica Neue" font-size="8" font-weight="400" fill="black" x="23270275e-20" y="8">+builds</tspan>
         </text>
       </g>
       <g id="Group_62">
         <g id="Graphic_64">
-          <rect x="922.2" y="744" width="102" height="41" fill="white"/>
-          <rect x="922.2" y="744" width="102" height="41" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width=".5"/>
-          <text transform="translate(927.2 749.164)" fill="black">
+          <rect x="922.2" y="744" width="102" height="50.895996" fill="white"/>
+          <rect x="922.2" y="744" width="102" height="50.895996" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width=".5"/>
+          <text transform="translate(927.2 749)" fill="black">
             <tspan font-family="Helvetica Neue" font-size="8" font-weight="400" fill="black" x="0" y="8">project: Project</tspan>
             <tspan font-family="Helvetica Neue" font-size="8" font-weight="400" fill="black" x="0" y="18.224">scheme: string</tspan>
             <tspan font-family="Helvetica Neue" font-size="8" font-weight="400" fill="black" x="0" y="28.447998">destinations: [string]</tspan>
+            <tspan font-family="Helvetica Neue" font-size="8" font-weight="400" fill="black" x="0" y="38.671997">test_plan: string</tspan>
           </text>
         </g>
         <g id="Graphic_63">
           <rect x="922.2" y="723" width="102" height="21" fill="white"/>
           <rect x="922.2" y="723" width="102" height="21" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width=".5"/>
-          <text transform="translate(927.2 728.384)" fill="black">
+          <text transform="translate(927.2 728)" fill="black">
             <tspan font-family="Helvetica Neue" font-size="8" font-weight="700" fill="black" x="38.148" y="8">Test</tspan>
           </text>
         </g>
       </g>
       <g id="Line_66">
-        <line x1="841.375" y1="754" x2="917" y2="754" marker-end="url(#StickArrow_Marker)" marker-start="url(#FilledDiamond_Marker)" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width=".5"/>
+        <line x1="841.3669" y1="754.281" x2="917.0087" y2="758.6483" marker-end="url(#StickArrow_Marker)" marker-start="url(#FilledDiamond_Marker)" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width=".5"/>
       </g>
       <g id="Graphic_67">
-        <rect x="857.694" y="743.5" width="33" height="21" fill="white"/>
-        <text transform="translate(862.694 748.888)" fill="black">
-          <tspan font-family="Helvetica Neue" font-size="8" font-weight="400" fill="black" x=".432" y="8">+tests</tspan>
+        <rect x="857.694" y="745.6763" width="33" height="21" fill="white"/>
+        <text transform="translate(863.126 750.6763)" fill="black">
+          <tspan font-family="Helvetica Neue" font-size="8" font-weight="400" fill="black" x="0" y="8">+tests</tspan>
         </text>
       </g>
       <g id="Line_68">
         <line x1="614.9" y1="741.25" x2="722.8421" y2="643.3374" marker-end="url(#Arrow_Marker)" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width=".5"/>
       </g>
       <g id="Line_69">
-        <line x1="947.7" y1="723" x2="809.9345" y2="642.1444" marker-end="url(#Arrow_Marker)" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width=".5"/>
+        <line x1="922.2" y1="740.974" x2="809.1706" y2="643.2101" marker-end="url(#Arrow_Marker)" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width=".5"/>
       </g>
     </g>
   </g>
