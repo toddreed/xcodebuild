@@ -16,22 +16,6 @@ module XcodeBuild
     ENV.fetch('DEVELOPER_DIR', `xcode-select -p`.chomp)
   end
 
-  def self.transporter_path
-    search_root = self.xcode_path
-    # This is where iTMSTransporter is located in Xcode 11, so we'll try this first; otherwise, we'll search for it
-    path = File.join(search_root, 'usr/bin/iTMSTransporter')
-    if File.exist?(path)
-      return path
-    else
-      matches = Dir.glob("#{search_root}/**/bin/iTMSTransporter")
-      if matches.length == 0
-        raise "iTMSTransporter not found."
-      else
-        return matches[0]
-      end
-    end
-  end
-
   def self.is_ci_build
     # CI is set by Circle CI
     # TRAVIS is set by Travis CI
@@ -205,28 +189,18 @@ module XcodeBuild
     run(env, *xcode_args)
   end
 
-  def self.make_deploy_script(project)
-    deploy_ruby_file = File.join(File.dirname(__FILE__), '_deploy.rb')
-    FileUtils.copy(deploy_ruby_file, project.packages_path / 'deploy.rb')
-  end
-
-  def self.export_packages(project)
-    project.builds.each do |build|
-      platform = case build.sdk
-                 when 'iphoneos'
-                   'ios'
-                 when 'appletvos'
-                   'appletvos'
-                 when 'macosx'
-                   'osx'
-                 end
-      package = XcodeBuild::Package.new(build.ipa_path, build.app_id, platform)
-      package.make_itmsp(build.package_path)
-    end
-  end
-
   def self.upload_build_to_test_flight(build, username, password)
-    XcodeBuild.run(XcodeBuild.transporter_path, '-m', 'upload', '-f', build.package_path.to_s, '-u', username, '-p', password, '-v', 'detailed')
+    platform = case build.sdk
+               when 'iphoneos'
+                 'ios'
+               when 'appletvos'
+                 'appletvos'
+               when 'macosx'
+                 'osx'
+               end
+    env = {'DEVELOPER_DIR' => self.xcode_path}
+    run(env, *['xcrun', 'altool', '--validate-app', '-f', build.ipa_path.to_s, '-t', platform, '-u', username, '-p', password])
+    run(env, *['xcrun', 'altool', '--upload-app', '-f', build.ipa_path.to_s, '-t', platform, '-u', username, '-p', password])
   end
 
   def self.process_test_log(test_log, scheme, build_dir)
