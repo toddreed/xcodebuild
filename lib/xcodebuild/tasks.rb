@@ -87,7 +87,7 @@ module XcodeBuild
       desc 'Prepares release notes from Git commit messages.'
       task :release_notes do
         release_notes = "(These release notes are automatically generated from Git commit messages.)\n\n"
-        release_notes << `git log $(git describe --abbrev=0)..$(git rev-parse --abbrev-ref HEAD) --no-merges --format='- %s'`
+        release_notes << `git log $(git describe --tags --abbrev=0)..$(git rev-parse --abbrev-ref HEAD) --no-merges --format='- %s'`
         FileUtils.makedirs(@project.build_dir)
         (@project.artifacts_path / 'CHANGELOG.md').open('w') do |file|
           file.puts release_notes
