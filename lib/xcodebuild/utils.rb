@@ -101,7 +101,7 @@ module XcodeBuild
         '1'
       end
     else
-      last_build_tag = `git for-each-ref "refs/tags/build/*" --sort=-taggerdate --format='%(refname:short)' --count=1`.chomp
+      last_build_tag = `git for-each-ref "refs/tags/build/*" --sort=-creatordate --format='%(refname:short)' --count=1`.chomp
       match = /build\/(\d+)/.match(last_build_tag)
       if match
         (match[1].to_i + 1).to_s
