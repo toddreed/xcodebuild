@@ -1,7 +1,6 @@
 require 'rake'
 require 'rake/tasklib'
 require 'xcodebuild/utils'
-require 'xcodebuild/package'
 
 module XcodeBuild
 

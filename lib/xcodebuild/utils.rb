@@ -2,7 +2,6 @@ require 'shellwords'
 require 'fileutils'
 require 'date'
 require 'xcodebuild/run'
-require 'xcodebuild/package'
 require 'octokit'
 
 module XcodeBuild
