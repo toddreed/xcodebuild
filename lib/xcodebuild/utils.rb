@@ -73,30 +73,33 @@ module XcodeBuild
     end
   end
 
-  def self.default_build_number
-    if is_github_workflow
-      client = Octokit::Client.new(:access_token => ENV['GITHUB_TOKEN'])
-      refs = client.refs(ENV['GITHUB_REPOSITORY'], 'tags/build')
-      last_build_number = refs.map { |it| it[:ref].match(/refs\/tags\/build\/(\d+)/)[1].to_i }.sort.last
-      if last_build_number
-        (last_build_number + 1).to_s
-      else
-        '1'
-      end
+  def self.inferred_build_number
+    strategy = ENV['INFERRED_BUILD_NUMBER_STRATEGY']
+
+    case strategy
+    when nil
+      '0'
+    when 'github_build_tag'
+      github_build_tag_inferred_build_number
     else
-      last_build_tag = `git for-each-ref "refs/tags/build/*" --sort=-creatordate --format='%(refname:short)' --count=1`.chomp
-      match = /build\/(\d+)/.match(last_build_tag)
-      if match
-        (match[1].to_i + 1).to_s
-      else
-        '1'
-      end
+      raise RuntimeError, "Unsupported value for INFERRED_BUILD_NUMBER_STRATEGY environment variable"
     end
   end
 
-  def self.build_number
+  def self.github_build_tag_inferred_build_number
+    client = Octokit::Client.new(:access_token => ENV['GITHUB_TOKEN'])
+    refs = client.refs(ENV['GITHUB_REPOSITORY'], 'tags/build')
+    last_build_number = refs.map { |it| it[:ref].match(/refs\/tags\/build\/(\d+)/)[1].to_i }.sort.last
+    if last_build_number
+      (last_build_number + 1).to_s
+    else
+      '1'
+    end
+  end
+
+    def self.build_number
     if @cached_build_number == nil
-      @cached_build_number = ENV.fetch('BUILD_NUMBER', default_build_number)
+      @cached_build_number = ENV.fetch('BUILD_NUMBER', inferred_build_number)
     end
     @cached_build_number
   end

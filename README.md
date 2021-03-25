@@ -84,13 +84,34 @@ bundle exec rake deploy_only
 
 ### Environment Variables
 
-| Variable                     | Description                                                  | Default                                                      |
-| ---------------------------- | ------------------------------------------------------------ | ------------------------------------------------------------ |
-| `BUILD_NUMBER`               | The build number passed to `xcodebuild` (the Xcode command line tool, not this library) and assigned to the `CURRENT_PROJECT_VERSION` build setting of your Xcode project. This assumes that in your `Info.plist` file you assign the Bundle version property (`CFBundleVersion`) to `$(CURRENT_PROJECT_VERSION)`. | If `BUILD_NUMBER` is not set then the default build number is inferred from the most recent build tag in the Git repository. A build tag is assumed to have the form `build/N` where `N` is the build number. For example, if the most recent build tag is `build/42`, then the implied build number is 43 (`N`+1). The `tag` Rake task can be used to generate a new build tag. |
-| `DEVELOPER_DIR`              | Controls the version of Xcode tools used.                    | The output from running `xcode-select -p`.                   |
-| `APP_STORE_CONNECT_USER`     | The Apple ID for an App Store Connect account with the Developer role used to upload builds. This is only used for the `deploy` task that uploads the `.ipa` file to TestFlight. |                                                              |
-| `APP_STORE_CONNECT_PASSWORD` | The password for the above Apple ID account.                 |                                                              |
-| `CERTIFICATE_PASSWORD`       | The password used for `.p12` certificates. Currently it is assumed that all certificates have the same password. This is only used when running in a CI environment; otherwise, it is assumed that the necessary certificates (and provisioning profiles) are on the developer’s machine. |                                                              |
+| Variable                         | Description                                                  | Default                                                      |
+| -------------------------------- | ------------------------------------------------------------ | ------------------------------------------------------------ |
+| `BUILD_NUMBER`                   | The build number passed to `xcodebuild` (the Xcode command line tool, not this library) and assigned to the `CURRENT_PROJECT_VERSION` build setting of your Xcode project. This assumes that in your `Info.plist` file you assign the Bundle version property (`CFBundleVersion`) to `$(CURRENT_PROJECT_VERSION)`. | If `BUILD_NUMBER` is not set then a build number may be inferred. See the section below for how build numbers are inferred. |
+| `INFERRED_BUILD_NUMBER_STRATEGY` | If `BUILD_NUMBER` is not set, this indicates what strategy to use to infer the build number. See the § “Inferred Build Numbers” below. |                                                              |
+| `DEVELOPER_DIR`                  | Controls the version of Xcode tools used.                    | The output from running `xcode-select -p`.                   |
+| `APP_STORE_CONNECT_USER`         | The Apple ID for an App Store Connect account with the Developer role used to upload builds. This is only used for the `deploy` task that uploads the `.ipa` file to TestFlight. |                                                              |
+| `APP_STORE_CONNECT_PASSWORD`     | The password for the above Apple ID account.                 |                                                              |
+| `CERTIFICATE_PASSWORD`           | The password used for `.p12` certificates. Currently it is assumed that all certificates have the same password. This is only used when running in a CI environment; otherwise, it is assumed that the necessary certificates (and provisioning profiles) are on the developer’s machine. |                                                              |
+
+## Inferred Build Numbers
+
+If the `BUILD_NUMBER` environment variable is not set, then a build number can be inferred according to the strategy set by the `INFERRED_BUILD_NUMBER_STRATEGY` environment variable. Currently there is only one strategy for inferring build number: `github_build_tag`.
+
+If `INFERRED_BUILD_NUMBER_STRATEGY` is not set, then the inferred build number will be `0`.
+
+### GitHub and Build Tags
+
+| Environment Variable             | Value or Description                                         |
+| -------------------------------- | ------------------------------------------------------------ |
+| `INFERRED_BUILD_NUMBER_STRATEGY` | `github_build_tag`                                           |
+| `GITHUB_TOKEN`                   | The GitHub token that provides authorization to the GitHub repository. If using GitHub Actions, a token can be obtained from the `${{ secrets.GITHUB_TOKEN }}` expression in the workflow. |
+| `GITHUB_REPOSITORY`              | The name of the GitHub repository. This environment variable is a default provided by GitHub Actions. |
+
+A build tag is assumed to have the form `build/N` where `N` is the build number. For example, if the most recent build tag is `build/42`, then the implied build number is 43 (`N`+1). If no tag of the form `build/N` exists, then the build number will be `1`. 
+
+The `tag` Rake task can be used to generate a new build tag.
+
+This strategy uses the GitHub REST API to query and set build tags.
 
 ## Build Projects
 
