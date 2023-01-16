@@ -11,7 +11,7 @@ Xcodebuild is a Ruby gem that implements a [rake](https://github.com/ruby/rake) 
 - Ruby. Ruby comes preinstalled on macOS, but it’s recommended to use [rbenv](https://github.com/rbenv/rbenv) or [RVM](https://rvm.io) to manage Ruby versions.
 - [Bundler](https://bundler.io). Once you have your preferred Ruby interpreter setup, run  `gem install bundler`.
 
-## Configuring
+## Setup
 
 To use Xcodebuild in a project:
 
@@ -45,7 +45,7 @@ To use Xcodebuild in a project:
    XcodeBuild::Tasks.new(project)
    ```
 
-5. Create a YAML file that describes your build configuration:
+5. Create a YAML file that describes your build configuration (see § “Configuring Build Projects” below for more information):
 
    ```yaml
    workspace: Foo.xcworkspace
@@ -97,7 +97,7 @@ bundle exec rake deploy_only
 
 If the `BUILD_NUMBER` environment variable is not set, then a build number can be inferred according to the strategy set by the `INFERRED_BUILD_NUMBER_STRATEGY` environment variable. Currently there is only one strategy for inferring build number: `github_build_tag`.
 
-If `INFERRED_BUILD_NUMBER_STRATEGY` is not set, then the inferred build number will be `0`.
+If `INFERRED_BUILD_NUMBER_STRATEGY` is not set, then the inferred build number will be `0`.
 
 ### GitHub and Build Tags
 
@@ -121,13 +121,59 @@ A build project has the following model:
 
 ![build-project-model](README.assets/build-project-model.svg)
 
+### Configuring Build Projects
+
+A build project can be specified with a YAML file. The following properties can be set:
+
+| Property                    | Type    | Default          | Required?                                           | Description                                                  |
+| --------------------------- | ------- |------------------| --------------------------------------------------- | ------------------------------------------------------------ |
+| `sdk`                       | string  | `iphoneos`       | Yes                                                 | One of: `iphoneos`, `iphonesimulator`, `macosx`, `appletvos`, etc. The SDK value passed to `xcodebuild` via the `-sdk` option. |
+| `code_signing_identity`     | string  | nil              |                                                     | Sets the `CODE_SIGN_IDENTITY` Xcode build setting.           |
+| `certificate`               | string  | nil              |                                                     | The filename of the certificate file used to code sign the build. This file should be located in the directory specified by `certificates_dir`. The certificate will be added to a temporary Keychain. |
+| `code_sign_style`           | string  | nil              |                                                     | Sets the `CODE_SIGN_STYLE` Xcode build setting.              |
+| `workspace`                 | string  | nil              | Only one of `workspace` or `project` should be set. | The Xcode workspace file to use with `xcodebuild`.           |
+| `project`                   | string  | nil              | Only one of `workspace` or `project` should be set. | The Xcode project path to use with `xcodebuild`. Only one of `workspace` or `project` should be set. |
+| `build_dir`                 | string  | `./build`        |                                                     | The directory path for the build output.                     |
+| `certificates_dir`          | string  | `./certificates` |                                                     | The directory where certificate files are located.           |
+| `provisioning_profiles_dir` | string  | `./profiles`     |                                                     | The directory where provisioning profiles are located. Provisioning profiles in this directory will be copied to `~/Library/MobileDevice/Provisioning Profiles` during the build and removed when the build completes. |
+| `builds`                    | [Build] | []               |                                                     | An array of Build objects. `xcodebuild` is run for each Build object. |
+| `tests`                     | [Test]  | []               |                                                     | Any array of Test objects. `xcodebuild` is run for each Test object. |
+
+#### Build Objects
+
+Build objects can have the following properties:
+
+| Property                | Type   | Default               | Required? | Description                                                  |
+| ----------------------- | ------ | --------------------- | --------- | ------------------------------------------------------------ |
+| `sdk`                   | string | Inherited             | Yes       | See above.                                                   |
+| `code_signing_identity` | string | Inherited             |           | See above.                                                   |
+| `certificate`           | string | Inherited             |           | See above.                                                   |
+| `code_sign_style`       | string | Inherited             |           | See above.                                                   |
+| `scheme`                | string |                       | Yes       | The scheme value passed to `xcodebuild` via the `-scheme` option. |
+| `provisioning_profile`  | string |                       |           | The name of the provisioning profile. Sets the `PROVISIONING_PROFILE_SPECIFIER` Xcode build setting. (This is not the filename of the provisioning profile, but the name of the provisioning profile specified in the file itself.) |
+| `configuration`         | string | `Release`             |           | The configuration value passed to `xcodebuild` via the `-configuration` option. |
+| `export_options_plist`  | string | `ExportOptions.plist` | Yes       | The path to an export options file. This is passed to `xcodebuild` (via the `--exportOptionsPlist` option) when exporting an archive. |
+| `app_id`                | string |                       | Yes       | The app’s App ID (found in App Store Connect).               |
+
+#### Test Objects
+
+Test objects can have the following properties:
+
+| Property                | Type     | Default   | Required? | Description                                                  |
+| ----------------------- | -------- | --------- | --------- | ------------------------------------------------------------ |
+| `sdk`                   | string   | Inherited | Yes       | See above.                                                   |
+| `code_signing_identity` | string   | Inherited |           | See above.                                                   |
+| `certificate`           | string   | Inherited |           | See above.                                                   |
+| `code_sign_style`       | string   | Inherited |           | See above.                                                   |
+| `scheme`                | string   |           |           | The scheme value passed to `xcodebuild` via the `-scheme` option. |
+| `destinations`          | [string] |           | Yes       | The destinations for running the tests. Each value is passed to `xcodebuild` via the `-destination` option. |
+| `test_plan`             | string   | nil       |           | The test plan passed to `xcodebuild` via the `-testPlan` option. |
+
 ## Tasks
 
 The tasks and their dependencies:
 
 ![tasks](README.assets/tasks.svg)
-
-
 
 The `package` tasks creates an `.xcarchive`, and the `deploy` tasks uploads to App Store Connect (TestFlight).
 
@@ -155,5 +201,4 @@ In RubyMine, your Run Configuration should look something like this:
 ## License
 
 The gem is available as open source under the terms of the [MIT License](http://opensource.org/licenses/MIT).
-
 
