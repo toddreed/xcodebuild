@@ -17,9 +17,9 @@ module XcodeBuild
   class BuildSettings
 
     def initialize(sdk: 'iphoneos',
-                   code_signing_identity: 'iPhone Distribution',
+                   code_signing_identity: nil,
                    certificate: nil,
-                   code_sign_style: 'Manual')
+                   code_sign_style: nil)
       @sdk = sdk
       @code_signing_identity = code_signing_identity
       @certificate = certificate
@@ -53,9 +53,9 @@ module XcodeBuild
 
 
     def initialize(sdk: 'iphoneos',
-                   code_signing_identity: 'iPhone Distribution',
+                   code_signing_identity: nil,
                    certificate: nil,
-                   code_sign_style: 'Manual',
+                   code_sign_style: nil,
                    workspace: nil,
                    project: nil,
                    build_dir: './build',
@@ -122,7 +122,7 @@ module XcodeBuild
                    certificate: nil,
                    code_sign_style: nil ,
                    scheme:,
-                   provisioning_profile:,
+                   provisioning_profile: nil,
                    configuration: 'Release',
                    export_options_plist: 'ExportOptions.plist',
                    app_id: nil)
