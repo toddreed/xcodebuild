@@ -122,6 +122,9 @@ module XcodeBuild
       xcode_args << '-configuration' << configuration
     end
 
+    xcode_args << '-resolvePackageDependencies'
+    xcode_args << '-onlyUsePackageVersionsFromResolvedFile'
+
     xcode_args.concat(args)
     xcode_args << action
 
